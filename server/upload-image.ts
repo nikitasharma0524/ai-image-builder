@@ -13,6 +13,7 @@ cloudinary.config({
 const formData = z.object({
   image: z.instanceof(FormData),
 });
+
 type UploadResult =
   | { success: UploadApiResponse; error?: never }
   | { error: string; success?: never };
@@ -21,16 +22,13 @@ export const uploadImage = actionClient
   .schema(formData)
   .action(async ({ parsedInput: { image } }): Promise<UploadResult> => {
     const formImage = image.get("image");
-    if (!formImage) return { error: "No image was provided" };
-    if (!image) return { error: "No image provided" };
 
-    const file = formImage as File;
-    type UploadResult =
-      | { success: UploadApiResponse; error?: never }
-      | { error: string; success?: never };
+    if (!formImage || !(formImage instanceof File)) {
+      return { error: "No valid image was provided" };
+    }
 
     try {
-      const arrayBuffer = await file.arrayBuffer();
+      const arrayBuffer = await formImage.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
       return new Promise<UploadResult>((resolve, reject) => {
@@ -40,7 +38,7 @@ export const uploadImage = actionClient
           },
           (error, result) => {
             if (error || !result) {
-              reject({ error: "Something went wrong" });
+              resolve({ error: "Something went wrong while uploading" });
             } else {
               resolve({ success: result });
             }
@@ -48,7 +46,12 @@ export const uploadImage = actionClient
         );
         uploadStream.end(buffer);
       });
-    } catch (error) {
-      return { error: error };
+    } catch (err: any) {
+      return {
+        error:
+          typeof err === "string"
+            ? err
+            : err?.message || "Unknown error occurred",
+      };
     }
   });
