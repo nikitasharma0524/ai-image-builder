@@ -23,7 +23,8 @@ export default function BgRemove() {
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
         <Button variant="outline" className="p-8">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            BG Aware <Image size={20} />
+            Background Remove
+            <Image size={20} />
           </span>
         </Button>
       </PopoverTrigger>

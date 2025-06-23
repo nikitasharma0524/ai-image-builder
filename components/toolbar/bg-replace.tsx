@@ -24,7 +24,7 @@ export default function BackgroundReplace() {
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
         <Button variant="outline" className="p-8">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            BG Aware <ImageOff size={20} />
+            BAckground Replace <ImageOff size={20} />
           </span>
         </Button>
       </PopoverTrigger>
