@@ -65,22 +65,48 @@ export default function UploadImage() {
     return (
       <Card
         className={cn(
-          "hover:cursor-pointer hover:bg-secondary hover:border-primary transition-all ease-in-out",
-          `${isDragActive ? "animate-pulse border-primary bg-secondary" : ""}`
+          "hover:cursor-pointer hover:bg-secondary hover:border-primary transition-all ease-in-out duration-300 border-2 border-dashed",
+          `${isDragActive ? "animate-pulse border-primary bg-secondary scale-[1.02]" : "border-muted-foreground/25"}`
         )}
         {...getRootProps()}
       >
-        <CardContent className="flex flex-col h-full items-center justify-center px-2 py-24 text-xs">
+        <CardContent className="flex flex-col h-full items-center justify-center px-2 py-24 text-xs gap-6">
           <input {...getInputProps()} type="text" />
-          <div className="flex items-center flex-col justify-center gap-2">
-            <p className="text-muted-foreground text-2xl">
-              {isDragActive
-                ? "Drop your image"
-                : "Start by uploading the image"}
-            </p>
-            <p className="text-muted-foreground">
-              Supported format - .jpg, .png, .webp, .jpeg
-            </p>
+          <div className="flex items-center flex-col justify-center gap-4">
+            <div className={cn(
+              "rounded-full bg-primary/10 p-8 transition-all duration-300",
+              isDragActive && "bg-primary/20 scale-110"
+            )}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="64"
+                height="64"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={cn("text-primary", isDragActive && "animate-bounce")}
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+            </div>
+            <div className="text-center space-y-2">
+              <p className="text-foreground text-2xl font-semibold">
+                {isDragActive
+                  ? "Drop your image here!"
+                  : "Drag & Drop or Click to Upload"}
+              </p>
+              <p className="text-muted-foreground text-sm">
+                Supported formats: <span className="font-medium">.jpg, .png, .webp, .jpeg</span>
+              </p>
+              <p className="text-muted-foreground text-xs">
+                Transform your images with AI-powered editing tools
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>

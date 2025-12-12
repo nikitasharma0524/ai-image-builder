@@ -1,14 +1,11 @@
 import { useImageStore } from "@/lib/image-store";
 import { useLayerStore } from "@/lib/layer-store";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
-import { Crop, Eraser, Image } from "lucide-react";
+import { Crop } from "lucide-react";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useMemo, useState } from "react";
-import { genRemove } from "@/server/gen-remove";
-import { format } from "path";
-import { bgRemoval } from "@/server/bg-remove";
 import { genFill } from "@/server/gen-fill";
 
 export default function GenerativeFill() {
@@ -16,12 +13,10 @@ export default function GenerativeFill() {
   const activeLayer = useLayerStore((state) => state.activeLayer);
   const addLayer = useLayerStore((state) => state.addLayer);
   const setActiveLayer = useLayerStore((state) => state.setActiveLayer);
-  const [activeTag, setActiveTag] = useState("");
   const generating = useImageStore((state) => state.generating);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const PREVIEW_SIZE = 250;
-  const EXPANSION_THRESHOLD = 250;
 
   const previewStyle = useMemo(() => {
     if (!activeLayer.width || !activeLayer.height) return {};
@@ -75,7 +70,7 @@ export default function GenerativeFill() {
   return (
     <Popover>
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
-        <Button variant="outline" className="p-8">
+        <Button variant="outline" className="py-8 w-full hover:scale-105 transition-transform duration-200 hover:shadow-md">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
             Generative Fill <Crop size={20} />
           </span>
@@ -84,9 +79,9 @@ export default function GenerativeFill() {
       <PopoverContent className="w-full">
         <div className="flex flex-col h-full">
           <div className="space-y-2 pb-4">
-            <h3>Generative Fill</h3>
+            <h3 className="font-semibold text-lg">Generative Fill</h3>
             <p className="text-sm text-muted-foreground">
-              Remove the background of an image with one simple click
+              Expand your canvas and let AI intelligently fill the extra space. Perfect for changing aspect ratios or extending scenes seamlessly.
             </p>
           </div>
           {activeLayer.width && activeLayer.height ? (
@@ -181,7 +176,7 @@ export default function GenerativeFill() {
           }}
           className="w-full mt-4"
         >
-          {generating ? "Generating..." : "Generative fill"}
+          {generating ? "Generating..." : "Apply Generative Fill"}
         </Button>
       </PopoverContent>
     </Popover>

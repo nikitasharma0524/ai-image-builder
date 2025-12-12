@@ -14,31 +14,34 @@ export default function GenRemove() {
   const addLayer = useLayerStore((state) => state.addLayer);
   const setActiveLayer = useLayerStore((state) => state.setActiveLayer);
   const [activeTag, setActiveTag] = useState("");
+  const generating = useImageStore((state) => state.generating);
 
   return (
     <Popover>
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
-        <Button variant="outline" className="p-8">
+        <Button variant="outline" className="py-8 w-full hover:scale-105 transition-transform duration-200 hover:shadow-md">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            Content Aware <Eraser size={20} />
+            Smart Remove <Eraser size={20} />
           </span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full">
-        <div>
-          <h3>Smart AI Remove</h3>
+      <PopoverContent className="w-full space-y-4">
+        <div className="space-y-2">
+          <h3 className="font-semibold text-lg">Smart AI Remove</h3>
           <p className="text-sm text-muted-foreground">
-            Generatively remove any part of the image
+            Remove any object from your image using AI. Just describe what you want to remove (e.g., "person", "car", "watermark") and let AI do the magic!
           </p>
         </div>
-        <div className="grid grid-cols-3 items-center gap-2 mt-2">
-          <Label htmlFor="selection">Selection</Label>
+        <div className="space-y-2">
+          <Label htmlFor="selection">What to remove?</Label>
           <Input
             id="selection"
-            className="col-span-2 h-8"
+            placeholder="e.g., person, car, text..."
+            className="h-10"
             value={activeTag}
             onChange={(e) => setActiveTag(e.target.value)}
           />
+          <p className="text-xs text-muted-foreground">Be specific for best results</p>
         </div>
         <Button
           onClick={async () => {
@@ -66,9 +69,10 @@ export default function GenRemove() {
               setActiveLayer(newLayerId);
             }
           }}
-          className="w-full mt-4"
+          className="w-full"
+          disabled={!activeTag.trim() || generating}
         >
-          Magic Remove
+          {generating ? "Removing..." : "Magic Remove"}
         </Button>
       </PopoverContent>
     </Popover>

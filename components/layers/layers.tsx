@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { ArrowRight, Layers2 } from "lucide-react";
 import LayerImage from "./layer-image";
-import LayerInfo from "./layer-imfo";
+import LayerInfo from "./layer-info";
 import { useMemo } from "react";
 import Image from "next/image";
 

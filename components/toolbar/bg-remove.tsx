@@ -1,13 +1,8 @@
 import { useImageStore } from "@/lib/image-store";
 import { useLayerStore } from "@/lib/layer-store";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
-import { Eraser, Image } from "lucide-react";
+import { Image } from "lucide-react";
 import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { useState } from "react";
-import { genRemove } from "@/server/gen-remove";
-import { format } from "path";
 import { bgRemoval } from "@/server/bg-remove";
 
 export default function BgRemove() {
@@ -15,24 +10,23 @@ export default function BgRemove() {
   const activeLayer = useLayerStore((state) => state.activeLayer);
   const addLayer = useLayerStore((state) => state.addLayer);
   const setActiveLayer = useLayerStore((state) => state.setActiveLayer);
-  const [activeTag, setActiveTag] = useState("");
   const generating = useImageStore((state) => state.generating);
 
   return (
     <Popover>
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
-        <Button variant="outline" className="p-8">
+        <Button variant="outline" className="py-8 w-full hover:scale-105 transition-transform duration-200 hover:shadow-md">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
             Background Remove
             <Image size={20} />
           </span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full">
-        <div>
-          <h3>Background Removal</h3>
+      <PopoverContent className="w-full space-y-4">
+        <div className="space-y-2">
+          <h3 className="font-semibold text-lg">Background Removal</h3>
           <p className="text-sm text-muted-foreground">
-            Remove the background of an image with one simple click
+            Instantly remove the background from your image with AI. Perfect for creating transparent PNGs, product photos, and professional portraits.
           </p>
         </div>
         <Button
@@ -68,7 +62,7 @@ export default function BgRemove() {
           }}
           className="w-full mt-4"
         >
-          {generating ? "Removing..." : "Removed background"}
+          {generating ? "Removing Background..." : "Remove Background"}
         </Button>
       </PopoverContent>
     </Popover>
