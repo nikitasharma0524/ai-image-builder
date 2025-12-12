@@ -23,7 +23,7 @@ export default function Editor() {
       <Button
         variant="outline"
         size="icon"
-        className="fixed top-4 left-4 z-50 lg:hidden"
+        className="fixed top-4 left-4 z-50 lg:hidden shadow-lg"
         onClick={() => setShowSidebar(!showSidebar)}
       >
         {showSidebar ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}

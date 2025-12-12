@@ -71,7 +71,7 @@ export default function UploadImage() {
         {...getRootProps()}
       >
         <CardContent className="flex flex-col h-full items-center justify-center px-2 py-24 text-xs gap-6">
-          <input {...getInputProps()} type="text" />
+          <input {...getInputProps()} />
           <div className="flex items-center flex-col justify-center gap-4">
             <div className={cn(
               "rounded-full bg-primary/10 p-8 transition-all duration-300",

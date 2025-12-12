@@ -10,7 +10,7 @@ export default function UploadForm() {
 
   if (!activeLayer.url) {
     return (
-      <div className="w-full p-4 sm:p-8 md:p-12 lg:p-24 flex flex-col justify-center h-full min-h-[50vh] lg:min-h-0">
+      <div className="w-full pt-20 pb-4 px-4 sm:p-8 md:p-12 lg:p-24 flex flex-col justify-center h-full min-h-[50vh] lg:min-h-0">
         {selectedType === "image" ? <UploadImage /> : null}
       </div>
     );
