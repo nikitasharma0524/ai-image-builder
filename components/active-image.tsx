@@ -45,14 +45,14 @@ export default function ActiveImage() {
       .map((id) => layers.find((l) => l.id === id))
       .filter(Boolean) as Layer[];
     return (
-      <div className="w-full relative h-svh p-24 bg-secondary flex flex-col items-center justify-center">
+      <div className="w-full relative min-h-[50vh] lg:h-svh p-4 sm:p-8 md:p-12 lg:p-24 bg-secondary flex flex-col items-center justify-center">
         <ImageComparision layers={comparisionLayers} />
       </div>
     );
   }
 
   return (
-    <div className="w-full relative h-svh p-24 bg-secondary flex flex-col items-center justify-center">
+    <div className="w-full relative min-h-[50vh] lg:h-svh p-4 sm:p-8 md:p-12 lg:p-24 bg-secondary flex flex-col items-center justify-center">
       {renderLayer(activeLayer)}
     </div>
   );

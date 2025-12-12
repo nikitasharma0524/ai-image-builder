@@ -8,14 +8,38 @@ import { useImageStore } from "@/lib/image-store";
 import { useLayerStore } from "@/lib/layer-store";
 import ImageTools from "./toolbar/image-toolbar";
 import Loading from "./loading-screen";
-import { Sparkles } from "lucide-react";
+import { Menu, Sparkles, X } from "lucide-react";
+import { useState } from "react";
+import { Button } from "./ui/button";
 
 export default function Editor() {
   const activeLayer = useLayerStore((state) => state.activeLayer);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [showLayers, setShowLayers] = useState(false);
+
   return (
-    <div className="flex h-full">
-      <div className="py-6 px-4 basis-[240px] shrink-0 border-r border-border bg-card/50">
-        <div className="pb-8 text-center space-y-4">
+    <div className="flex h-full relative">
+      {/* Mobile Menu Button */}
+      <Button
+        variant="outline"
+        size="icon"
+        className="fixed top-4 left-4 z-50 lg:hidden"
+        onClick={() => setShowSidebar(!showSidebar)}
+      >
+        {showSidebar ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+      </Button>
+
+      {/* Left Sidebar - Tools */}
+      <div
+        className={`
+          fixed lg:relative inset-y-0 left-0 z-40
+          py-6 px-4 w-[280px] lg:basis-[240px] shrink-0
+          border-r border-border bg-card/95 backdrop-blur-sm lg:bg-card/50
+          transform transition-transform duration-300 ease-in-out
+          ${showSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
+      >
+        <div className="pb-8 text-center space-y-4 mt-12 lg:mt-0">
           <div className="flex items-center justify-center gap-2">
             <div className="relative">
               <Sparkles className="h-8 w-8 text-primary" />
@@ -40,9 +64,51 @@ export default function Editor() {
           ) : null}
         </div>
       </div>
-      <UploadForm />
-      <ActiveImage />
-      <Layers />
+
+      {/* Overlay for mobile */}
+      {showSidebar && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={() => setShowSidebar(false)}
+        />
+      )}
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        <UploadForm />
+        <ActiveImage />
+      </div>
+
+      {/* Mobile Layers Toggle Button */}
+      <Button
+        variant="outline"
+        size="icon"
+        className="fixed top-4 right-4 z-50 lg:hidden"
+        onClick={() => setShowLayers(!showLayers)}
+      >
+        <Sparkles className="h-4 w-4" />
+      </Button>
+
+      {/* Right Sidebar - Layers */}
+      <div
+        className={`
+          fixed lg:relative inset-y-0 right-0 z-40
+          w-full sm:w-[360px] lg:w-auto
+          transform transition-transform duration-300 ease-in-out
+          ${showLayers ? "translate-x-0" : "translate-x-full lg:translate-x-0"}
+        `}
+      >
+        <Layers onClose={() => setShowLayers(false)} />
+      </div>
+
+      {/* Overlay for mobile layers */}
+      {showLayers && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={() => setShowLayers(false)}
+        />
+      )}
+
       <Loading />
     </div>
   );

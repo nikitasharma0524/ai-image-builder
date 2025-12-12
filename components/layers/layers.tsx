@@ -11,13 +11,13 @@ import {
 import { useImageStore } from "@/lib/image-store";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { ArrowRight, Layers2 } from "lucide-react";
+import { ArrowRight, Layers2, X } from "lucide-react";
 import LayerImage from "./layer-image";
 import LayerInfo from "./layer-info";
 import { useMemo } from "react";
 import Image from "next/image";
 
-export default function Layers() {
+export default function Layers({ onClose }: { onClose?: () => void }) {
   const layers = useLayerStore((state) => state.layers);
   const activeLayer = useLayerStore((state) => state.activeLayer);
   const generating = useImageStore((state) => state.generating);
@@ -49,8 +49,19 @@ export default function Layers() {
   }, [layerComparisonMode, layers]);
 
   return (
-    <Card className="h-full basis-[320px] shrink-0 scrollbar-thin scrollbar-track-secondary overflow-y-scroll scrollbar-thumb-primary scrollbar-thumb-rounded-full scrollbar-track-rounded-full overflow-x-hidden relative flex flex-col shadow-2xl">
+    <Card className="h-full w-full lg:basis-[320px] shrink-0 scrollbar-thin scrollbar-track-secondary overflow-y-scroll scrollbar-thumb-primary scrollbar-thumb-rounded-full scrollbar-track-rounded-full overflow-x-hidden relative flex flex-col shadow-2xl">
       <CardHeader className="sticky top-0 z-50 px-4 py-6 min-h-24 bg-card shadow-sm">
+        {/* Close button for mobile */}
+        {onClose && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 right-4 lg:hidden"
+            onClick={onClose}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
         {layerComparisonMode ? (
           <div>
             <CardTitle className="text-sm pb-2">Comparing...</CardTitle>
@@ -124,7 +135,7 @@ export default function Layers() {
           </div>
         ))}
       </CardContent>
-      <div className="flex justify-around">
+      <div className="flex flex-col sm:flex-row gap-2 sm:justify-around p-4">
         <Button
           onClick={() => {
             addLayer({
@@ -137,14 +148,15 @@ export default function Layers() {
               format: "",
             });
           }}
-          className="flex gap-2"
+          className="flex gap-2 w-full sm:w-auto"
           variant={"outline"}
         >
-          <span>Create Layers</span>
+          <span className="hidden sm:inline">Create Layers</span>
+          <span className="sm:hidden">Create</span>
           <Layers2 className="text-secondary-foreground" size={18} />
         </Button>
         <Button
-          className="flex items-center gap-2"
+          className="flex items-center justify-center gap-2 w-full sm:w-auto"
           variant={"outline"}
           onClick={() => {
             if (layerComparisonMode) {
@@ -154,8 +166,8 @@ export default function Layers() {
             }
           }}
         >
-          <span>
-            {layerComparisonMode ? "Stop Comparing" : "Compare Layers"}
+          <span className="text-center">
+            {layerComparisonMode ? "Stop Comparing" : "Compare"}
           </span>
         </Button>
       </div>
